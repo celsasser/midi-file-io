@@ -5,7 +5,7 @@
  */
 
 const assert=require("../support/assert");
-const {parseMidiFile}=require("../../lib/reader");
+const {parseMidiFile}=require("../../dist");
 
 describe("lib.reader", function() {
 	describe("parseMidiFile", function() {
