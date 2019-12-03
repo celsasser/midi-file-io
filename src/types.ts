@@ -44,7 +44,7 @@ export enum MidiIoEventSubtype {
 	ProgramChange = "programChange",
 	SetTempo = "setTempo",
 	SequenceNumber = "sequenceNumber",
-	sequencerSpecific = "sequencerSpecific",
+	SequencerSpecific = "sequencerSpecific",
 	SmpteOffset = "smpteOffset",
 	TimeSignature = "timeSignature",
 	TrackName = "trackName",
