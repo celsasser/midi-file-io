@@ -48,41 +48,41 @@ export function writeMidiToBuffer(midiData: MidiIoSong): Buffer {
 		function writeEvent(event: MidiIoEvent): void {
 			function writeChannelData() {
 				switch(event.subtype) {
-					case MidiIoEventSubtype.noteOff: {
+					case MidiIoEventSubtype.NoteOff: {
 						trackStream.writeInt8(0x80 | event.channel);
 						trackStream.writeInt8(event.noteNumber);
 						trackStream.writeInt8(event.velocity);
 						break;
 					}
-					case MidiIoEventSubtype.noteOn: {
+					case MidiIoEventSubtype.NoteOn: {
 						trackStream.writeInt8(0x90 | event.channel);
 						trackStream.writeInt8(event.noteNumber);
 						trackStream.writeInt8(event.velocity);
 						break;
 					}
-					case MidiIoEventSubtype.noteAftertouch: {
+					case MidiIoEventSubtype.NoteAftertouch: {
 						trackStream.writeInt8(0x0a | event.channel);
 						trackStream.writeInt8(event.noteNumber);
 						trackStream.writeInt8(event.amount);
 						break;
 					}
-					case MidiIoEventSubtype.controller: {
+					case MidiIoEventSubtype.Controller: {
 						trackStream.writeInt8(0x0b | event.channel);
 						trackStream.writeInt8(event.controllerType);
 						trackStream.writeInt8(event.value);
 						break;
 					}
-					case MidiIoEventSubtype.programChange: {
+					case MidiIoEventSubtype.ProgramChange: {
 						trackStream.writeInt8(0x0c | event.channel);
 						trackStream.writeInt8(event.programNumber);
 						break;
 					}
-					case MidiIoEventSubtype.channelAftertouch: {
+					case MidiIoEventSubtype.ChannelAftertouch: {
 						trackStream.writeInt8(0x0d | event.channel);
 						trackStream.writeInt8(event.amount);
 						break;
 					}
-					case MidiIoEventSubtype.pitchBend: {
+					case MidiIoEventSubtype.PitchBend: {
 						trackStream.writeInt8(0x0e | event.channel);
 						trackStream.writeInt8(event.value & 0x7f);
 						trackStream.writeInt8(event.value >> 7);
