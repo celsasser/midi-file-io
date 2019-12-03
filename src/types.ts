@@ -53,9 +53,9 @@ export enum MidiIoEventSubtype {
 }
 
 export interface MidiIoHeader {
-	FormatType: MidiFileType,
-	TrackCount: number,
-	TicksPerQuarter: number
+	formatType: MidiFileType,
+	trackCount: number,
+	ticksPerQuarter: number
 }
 
 export interface MidiIoEvent {
