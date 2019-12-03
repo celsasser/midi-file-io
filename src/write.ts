@@ -9,6 +9,7 @@ import {WriteStream} from "./stream/write";
 import {
 	MidiIoEvent,
 	MidiIoEventSubtype,
+	MidiIoEventType,
 	MidiIoSong,
 	MidiIoTrack
 } from "./types";
@@ -48,41 +49,41 @@ export function writeMidiToBuffer(midiData: MidiIoSong): Buffer {
 		function writeEvent(event: MidiIoEvent): void {
 			function writeChannelData() {
 				switch(event.subtype) {
-					case MidiIoEventSubtype.noteOff: {
+					case MidiIoEventSubtype.NoteOff: {
 						trackStream.writeInt8(0x80 | event.channel);
 						trackStream.writeInt8(event.noteNumber);
 						trackStream.writeInt8(event.velocity);
 						break;
 					}
-					case MidiIoEventSubtype.noteOn: {
+					case MidiIoEventSubtype.NoteOn: {
 						trackStream.writeInt8(0x90 | event.channel);
 						trackStream.writeInt8(event.noteNumber);
 						trackStream.writeInt8(event.velocity);
 						break;
 					}
-					case MidiIoEventSubtype.noteAftertouch: {
+					case MidiIoEventSubtype.NoteAftertouch: {
 						trackStream.writeInt8(0x0a | event.channel);
 						trackStream.writeInt8(event.noteNumber);
 						trackStream.writeInt8(event.amount);
 						break;
 					}
-					case MidiIoEventSubtype.controller: {
+					case MidiIoEventSubtype.Controller: {
 						trackStream.writeInt8(0x0b | event.channel);
 						trackStream.writeInt8(event.controllerType);
 						trackStream.writeInt8(event.value);
 						break;
 					}
-					case MidiIoEventSubtype.programChange: {
+					case MidiIoEventSubtype.ProgramChange: {
 						trackStream.writeInt8(0x0c | event.channel);
 						trackStream.writeInt8(event.programNumber);
 						break;
 					}
-					case MidiIoEventSubtype.channelAftertouch: {
+					case MidiIoEventSubtype.ChannelAftertouch: {
 						trackStream.writeInt8(0x0d | event.channel);
 						trackStream.writeInt8(event.amount);
 						break;
 					}
-					case MidiIoEventSubtype.pitchBend: {
+					case MidiIoEventSubtype.PitchBend: {
 						trackStream.writeInt8(0x0e | event.channel);
 						trackStream.writeInt8(event.value & 0x7f);
 						trackStream.writeInt8(event.value >> 7);
@@ -105,52 +106,52 @@ export function writeMidiToBuffer(midiData: MidiIoSong): Buffer {
 				// write metadata's status byte
 				trackStream.writeInt8(0xff);
 				switch(event.subtype) {
-					case "sequenceNumber": {
+					case MidiIoEventSubtype.SequenceNumber: {
 						trackStream.writeInt8(0x00);
 						trackStream.writeVarInt(2);
 						trackStream.writeInt16(event.number);
 						break;
 					}
-					case "text": {
+					case MidiIoEventSubtype.Text: {
 						_writeText(0x01);
 						break;
 					}
-					case "copyrightNotice": {
+					case MidiIoEventSubtype.CopyrightNotice: {
 						_writeText(0x02);
 						break;
 					}
-					case "trackName": {
+					case MidiIoEventSubtype.TrackName: {
 						_writeText(0x03);
 						break;
 					}
-					case "instrumentName": {
+					case MidiIoEventSubtype.InstrumentName: {
 						_writeText(0x04);
 						break;
 					}
-					case "lyrics": {
+					case MidiIoEventSubtype.Lyrics: {
 						_writeText(0x05);
 						break;
 					}
-					case "marker": {
+					case MidiIoEventSubtype.Marker: {
 						_writeText(0x06);
 						break;
 					}
-					case "cuePoint": {
+					case MidiIoEventSubtype.CuePoint: {
 						_writeText(0x07);
 						break;
 					}
-					case "midiChannelPrefix": {
+					case MidiIoEventSubtype.MidiChannelPrefix: {
 						trackStream.writeInt8(0x20);
 						trackStream.writeVarInt(1);
 						trackStream.writeInt8(event.channel);
 						break;
 					}
-					case "endOfTrack": {
+					case MidiIoEventSubtype.EndOfTrack: {
 						trackStream.writeInt8(0x2f);
 						trackStream.writeVarInt(0);
 						break;
 					}
-					case "setTempo": {
+					case MidiIoEventSubtype.SetTempo: {
 						trackStream.writeInt8(0x51);
 						trackStream.writeVarInt(3);
 						trackStream.writeInt8(event.microsecondsPerBeat >> 16 & 0xff);
@@ -158,7 +159,7 @@ export function writeMidiToBuffer(midiData: MidiIoSong): Buffer {
 						trackStream.writeInt8(event.microsecondsPerBeat & 0xff);
 						break;
 					}
-					case "smpteOffset": {
+					case MidiIoEventSubtype.SmpteOffset: {
 						const frameCode = frameCodeMap[event.frameRate];
 						trackStream.writeInt8(0x54);
 						trackStream.writeVarInt(5);
@@ -169,7 +170,7 @@ export function writeMidiToBuffer(midiData: MidiIoSong): Buffer {
 						trackStream.writeInt8(event.subframe);
 						break;
 					}
-					case "timeSignature": {
+					case MidiIoEventSubtype.TimeSignature: {
 						trackStream.writeInt8(0x58);
 						trackStream.writeVarInt(4);
 						trackStream.writeInt8(event.numerator);
@@ -178,14 +179,14 @@ export function writeMidiToBuffer(midiData: MidiIoSong): Buffer {
 						trackStream.writeInt8(event.thirtyseconds);
 						break;
 					}
-					case "keySignature": {
+					case MidiIoEventSubtype.KeySignature: {
 						trackStream.writeInt8(0x59);
 						trackStream.writeVarInt(2);
 						trackStream.writeInt8(event.key);
 						trackStream.writeInt8(event.scale);
 						break;
 					}
-					case "sequencerSpecific": {
+					case MidiIoEventSubtype.SequencerSpecific: {
 						trackStream.writeInt8(0x7f);
 						trackStream.writeVarInt(event.data.length);
 						trackStream.write(event.data);
@@ -203,11 +204,11 @@ export function writeMidiToBuffer(midiData: MidiIoSong): Buffer {
 
 			// write the event's delta offset
 			trackStream.writeVarInt(event.deltaTime);
-			if(event.type === "channel") {
+			if(event.type === MidiIoEventType.Channel) {
 				writeChannelData();
-			} else if(event.type === "meta") {
+			} else if(event.type === MidiIoEventType.Meta) {
 				writeMetaData();
-			} else if(event.type === "sysEx") {
+			} else if(event.type === MidiIoEventType.SysEx) {
 				writeSysexData();
 			}
 		}
