@@ -16,8 +16,26 @@ export enum MidiFileType {
 	/**
 	 * contains one or more independent (as in played independently) tracks
 	 */
-	Independent =2
+	Independent = 2
 }
+
+export type MidiChannelType =
+	|0
+	|1
+	|2
+	|3
+	|4
+	|5
+	|6
+	|7
+	|8
+	|9
+	|10
+	|11
+	|12
+	|13
+	|14
+	|15;
 
 export enum MidiIoEventType {
 	Channel = "channel",
@@ -60,7 +78,7 @@ export interface MidiIoHeader {
 
 export interface MidiIoEvent {
 	amount?: number,
-	channel?: number,
+	channel?: MidiChannelType,
 	controllerType?: number,
 	data?: string,
 	deltaTime: number,

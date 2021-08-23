@@ -1,6 +1,7 @@
 import {readFileSync} from "fs";
 import {ReadStream} from "./stream/read";
 import {
+	MidiChannelType,
 	MidiIoEvent,
 	MidiIoEventSubtype,
 	MidiIoEventType,
@@ -83,7 +84,7 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 						if(length != 1) {
 							throw new Error(`expected length for midiChannelPrefix event is 1 but found ${length}`);
 						}
-						event.channel = stream.readInt8();
+						event.channel = stream.readInt8() as MidiChannelType;
 						return event;
 					case 0x2f:
 						event.subtype = MidiIoEventSubtype.EndOfTrack;
@@ -168,7 +169,7 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 				lastEventTypeByte = eventTypeByte;
 			}
 			const eventType = eventTypeByte >> 4;
-			event.channel = eventTypeByte & 0x0f;
+			event.channel = (eventTypeByte & 0x0f) as MidiChannelType;
 			event.type = MidiIoEventType.Channel;
 			switch(eventType) {
 				case 0x08:
