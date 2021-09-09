@@ -4,8 +4,8 @@
  * Time: 15:05
  */
 
-const assert=require("../support/assert");
-const {parseMidiFile}=require("../../dist");
+import * as assert from "assert";
+import {parseMidiFile} from "../../src";
 
 describe("lib.reader", function() {
 	describe("parseMidiFile", function() {

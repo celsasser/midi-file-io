@@ -4,20 +4,11 @@
  * Time: 15:05
  */
 
-const assert=require("../support/assert");
-const fs=require("fs");
-const {
-	parseMidiBuffer,
-	parseMidiFile,
-	writeMidiToBuffer,
-	writeMidiToFile
-}=require("../../dist");
+import * as assert from "assert";
+import * as fs from "fs";
+import {parseMidiBuffer, writeMidiToBuffer, writeMidiToFile} from "../../src";
 
-/**
- * @param {string} read
- * @param {Buffer} write
- */
-function compareBuffers(read, write) {
+function compareBuffers(read: string, write: Buffer): void {
 	/* eslint-disable no-console */
 	try {
 		assert.strictEqual(write.toString("binary"), read.toString());
@@ -28,11 +19,26 @@ function compareBuffers(read, write) {
 			let rc=read.charCodeAt(index),
 				wc=write[index],
 				prefix=`${((rc===wc) ? " " : "*")}${index}`;
-			console.info(`${assert.format(prefix, 4)} ${assert.format(rc.toString(16), 3)} ${assert.format(wc.toString(16), 3)}  [${read[index]}]`);
+			console.info(`${format(prefix, 4)} ${format(rc.toString(16), 3)} ${format(wc.toString(16), 3)}  [${read[index]}]`);
 		}
 		throw error;
 	}
 }
+
+/**
+ * Formats value with options
+ * @param {*} value
+ * @param {number} minWidth
+ */
+function format(value: unknown, minWidth=0): string {
+	let text: string = (value==null)
+		? String(value)
+		: value.toString();
+	while(text.length<minWidth) {
+		text=` ${text}`;
+	}
+	return text;
+};
 
 describe("lib.writer", function() {
 	describe("writeMidiToBuffer", function() {
@@ -49,7 +55,7 @@ describe("lib.writer", function() {
 			const readBuffer=fs.readFileSync("./test/data/simple.mid", {encoding: "binary"}),
 				parsed=parseMidiBuffer(readBuffer);
 			writeMidiToFile(parsed, "./test/data/out.mid");
-			compareBuffers(readBuffer, fs.readFileSync("./test/data/out.mid", {encoding: "binary"}));
+			compareBuffers(readBuffer, fs.readFileSync("./test/data/out.mid", {encoding: "binary"}) as unknown as Buffer);
 		});
 	});
 });

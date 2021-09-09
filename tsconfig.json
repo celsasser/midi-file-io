@@ -1,32 +1,32 @@
 {
 	"compilerOptions": {
+		"allowUnreachableCode": false,
+		"alwaysStrict": true,
 		/* Generates corresponding '.d.ts' file. */
 		"declaration": true,
 		/* Generates a sourcemap for each corresponding '.d.ts' file. */
 		"declarationMap": true,
 		/* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
 		"module": "commonjs",
-		/* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-		"moduleResolution": "node",
 		/* Redirect output structure to the directory. */
 		"outDir": "./dist",
 		/* Do not generate javascript on errors. */
 		"noEmitOnError": false,
 		/* Raise error on expressions and declarations with an implied 'any' type. */
 		"noImplicitAny": true,
+		/* Raise error on 'this' expressions with an implied 'any' type. */
+		"noImplicitThis": true,
 		/* Report error when not all code paths in function return a value. */
 		"noImplicitReturns": true,
 		/* Report errors on unused locals. */
 		"noUnusedLocals": true,
-		"pretty": false,
-		"strict": true,
+		"pretty": true,
 		/* We are turning off because we don't want to be able to trust the integrity of a midi file and not validate read data types */
 		"strictNullChecks": false,
 		/* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
-		"target": "es2018"
+		"target": "es2020"
 		// "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
 		// "allowUmdGlobalAccess": true,          /* Allow accessing UMD globals from modules. */
-		// "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
 		// "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
 		// "checkJs": true,                       /* Report errors in .js files. */
 		// "composite": true,                     /* Enable project compilation */
@@ -59,7 +59,7 @@
 		// "types": [],                           /* Type declaration files to be included in compilation. */
 	},
 	"include": [
-		"./src/**/*.js",
-		"./src/**/*.ts"
+		"src/**/*",
+		"res/**/*.json"
 	]
 }

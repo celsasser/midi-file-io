@@ -4,7 +4,8 @@
  * Time: 15:02
  */
 
-import {writeFileSync} from "fs";
+import {mkdirSync, writeFileSync} from "fs";
+import {parse as parsePath} from "path";
 import {WriteStream} from "./stream/write";
 import {
 	MidiIoEvent,
@@ -230,5 +231,6 @@ export function writeMidiToFile(midiData: MidiIoSong, filePath: string): void {
 	if(/.mid$/i.test(filePath) === false) {
 		filePath += ".mid";
 	}
+	mkdirSync(parsePath(filePath).dir, {recursive: true});
 	writeFileSync(filePath, buffer, {encoding: "binary"});
 }
