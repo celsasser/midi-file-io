@@ -10,7 +10,7 @@
 # eliminate .idea
 .idea
 
-# misc. directories and files that automatically generated
+# misc directories and files that are automatically generated
 coverage
 dist
 node_modules
