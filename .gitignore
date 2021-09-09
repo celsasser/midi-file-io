@@ -10,11 +10,10 @@
 # eliminate .idea
 .idea
 
-# npm modules will be built dynamically
-node_modules
-
-# dist will be built dynamically
+# our own junk
+coverage
 dist
+node_modules
 
 # our own internal gobbledegook
 test/data/out.mid
