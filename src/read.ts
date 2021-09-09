@@ -1,6 +1,7 @@
 import {readFileSync} from "fs";
 import {ReadStream} from "./stream/read";
 import {
+	MidiChannelType,
 	MidiIoEvent,
 	MidiIoEventSubtype,
 	MidiIoEventType,
@@ -32,67 +33,67 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 		const event: MidiIoEvent = {
 			deltaTime: stream.readVarInt(),
 			// note: we don't know these yet but are defaulting to get around ts errors
-			subtype: MidiIoEventSubtype.unknown
+			subtype: MidiIoEventSubtype.Unknown
 		};
 		let eventTypeByte = stream.readInt8();
 		if((eventTypeByte & 0xf0) == 0xf0) {
 			/* system / meta event */
 			if(eventTypeByte == 0xff) {
 				/* meta event */
-				event.type = MidiIoEventType.meta;
+				event.type = MidiIoEventType.Meta;
 				const subtypeByte = stream.readInt8(),
 					length = stream.readVarInt();
 				switch(subtypeByte) {
 					case 0x00:
-						event.subtype = MidiIoEventSubtype.sequenceNumber;
+						event.subtype = MidiIoEventSubtype.SequenceNumber;
 						if(length != 2) {
 							throw new Error(`expected length for sequenceNumber event is 2 but found ${length}`);
 						}
 						event.number = stream.readInt16();
 						return event;
 					case 0x01:
-						event.subtype = MidiIoEventSubtype.text;
+						event.subtype = MidiIoEventSubtype.Text;
 						event.text = stream.read(length);
 						return event;
 					case 0x02:
-						event.subtype = MidiIoEventSubtype.copyrightNotice;
+						event.subtype = MidiIoEventSubtype.CopyrightNotice;
 						event.text = stream.read(length);
 						return event;
 					case 0x03:
-						event.subtype = MidiIoEventSubtype.trackName;
+						event.subtype = MidiIoEventSubtype.TrackName;
 						event.text = stream.read(length);
 						return event;
 					case 0x04:
-						event.subtype = MidiIoEventSubtype.instrumentName;
+						event.subtype = MidiIoEventSubtype.InstrumentName;
 						event.text = stream.read(length);
 						return event;
 					case 0x05:
-						event.subtype = MidiIoEventSubtype.lyrics;
+						event.subtype = MidiIoEventSubtype.Lyrics;
 						event.text = stream.read(length);
 						return event;
 					case 0x06:
-						event.subtype = MidiIoEventSubtype.marker;
+						event.subtype = MidiIoEventSubtype.Marker;
 						event.text = stream.read(length);
 						return event;
 					case 0x07:
-						event.subtype = MidiIoEventSubtype.cuePoint;
+						event.subtype = MidiIoEventSubtype.CuePoint;
 						event.text = stream.read(length);
 						return event;
 					case 0x20:
-						event.subtype = MidiIoEventSubtype.midiChannelPrefix;
+						event.subtype = MidiIoEventSubtype.MidiChannelPrefix;
 						if(length != 1) {
 							throw new Error(`expected length for midiChannelPrefix event is 1 but found ${length}`);
 						}
-						event.channel = stream.readInt8();
+						event.channel = stream.readInt8() as MidiChannelType;
 						return event;
 					case 0x2f:
-						event.subtype = MidiIoEventSubtype.endOfTrack;
+						event.subtype = MidiIoEventSubtype.EndOfTrack;
 						if(length != 0) {
 							throw new Error(`expected length for endOfTrack event is 0 but found ${length}`);
 						}
 						return event;
 					case 0x51:
-						event.subtype = MidiIoEventSubtype.setTempo;
+						event.subtype = MidiIoEventSubtype.SetTempo;
 						if(length != 3) {
 							throw new Error(`expected length for setTempo event is 3 but found ${length}`);
 						}
@@ -103,7 +104,7 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 						);
 						return event;
 					case 0x54:
-						event.subtype = MidiIoEventSubtype.smpteOffset;
+						event.subtype = MidiIoEventSubtype.SmpteOffset;
 						if(length != 5) {
 							throw new Error(`expected length for smpteOffset event is 5 but found ${length}`);
 						}
@@ -116,7 +117,7 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 						event.subframe = stream.readInt8();
 						return event;
 					case 0x58:
-						event.subtype = MidiIoEventSubtype.timeSignature;
+						event.subtype = MidiIoEventSubtype.TimeSignature;
 						if(length != 4) {
 							throw new Error(`expected length for timeSignature event is 4 but found ${length}`);
 						}
@@ -126,7 +127,7 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 						event.thirtyseconds = stream.readInt8();
 						return event;
 					case 0x59:
-						event.subtype = MidiIoEventSubtype.keySignature;
+						event.subtype = MidiIoEventSubtype.KeySignature;
 						if(length != 2) {
 							throw new Error(`expected length for keySignature event is 2 but found ${length}`);
 						}
@@ -134,23 +135,23 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 						event.scale = stream.readInt8();
 						return event;
 					case 0x7f:
-						event.subtype = MidiIoEventSubtype.sequencerSpecific;
+						event.subtype = MidiIoEventSubtype.SequencerSpecific;
 						event.data = stream.read(length);
 						return event;
 					default:
 						// console.log("Unrecognised meta event subtype: " + subtypeByte);
-						event.subtype = MidiIoEventSubtype.unknown;
+						event.subtype = MidiIoEventSubtype.Unknown;
 						event.data = stream.read(length);
 						return event;
 				}
 			} else if(eventTypeByte == 0xf0) {
 				const length = stream.readVarInt();
-				event.type = MidiIoEventType.sysEx;
+				event.type = MidiIoEventType.SysEx;
 				event.data = stream.read(length);
 				return event;
 			} else if(eventTypeByte == 0xf7) {
 				const length = stream.readVarInt();
-				event.type = MidiIoEventType.dividedSysEx;
+				event.type = MidiIoEventType.DividedSysEx;
 				event.data = stream.read(length);
 				return event;
 			} else {
@@ -168,11 +169,11 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 				lastEventTypeByte = eventTypeByte;
 			}
 			const eventType = eventTypeByte >> 4;
-			event.channel = eventTypeByte & 0x0f;
-			event.type = MidiIoEventType.channel;
+			event.channel = (eventTypeByte & 0x0f) as MidiChannelType;
+			event.type = MidiIoEventType.Channel;
 			switch(eventType) {
 				case 0x08:
-					event.subtype = MidiIoEventSubtype.noteOff;
+					event.subtype = MidiIoEventSubtype.NoteOff;
 					event.noteNumber = param1;
 					event.velocity = stream.readInt8();
 					return event;
@@ -180,31 +181,31 @@ export function parseMidiBuffer(data: string): MidiIoSong {
 					event.noteNumber = param1;
 					event.velocity = stream.readInt8();
 					if(event.velocity == 0) {
-						event.subtype = MidiIoEventSubtype.noteOff;
+						event.subtype = MidiIoEventSubtype.NoteOff;
 					} else {
-						event.subtype = MidiIoEventSubtype.noteOn;
+						event.subtype = MidiIoEventSubtype.NoteOn;
 					}
 					return event;
 				case 0x0a:
-					event.subtype = MidiIoEventSubtype.noteAftertouch;
+					event.subtype = MidiIoEventSubtype.NoteAftertouch;
 					event.noteNumber = param1;
 					event.amount = stream.readInt8();
 					return event;
 				case 0x0b:
-					event.subtype = MidiIoEventSubtype.controller;
+					event.subtype = MidiIoEventSubtype.Controller;
 					event.controllerType = param1;
 					event.value = stream.readInt8();
 					return event;
 				case 0x0c:
-					event.subtype = MidiIoEventSubtype.programChange;
+					event.subtype = MidiIoEventSubtype.ProgramChange;
 					event.programNumber = param1;
 					return event;
 				case 0x0d:
-					event.subtype = MidiIoEventSubtype.channelAftertouch;
+					event.subtype = MidiIoEventSubtype.ChannelAftertouch;
 					event.amount = param1;
 					return event;
 				case 0x0e:
-					event.subtype = MidiIoEventSubtype.pitchBend;
+					event.subtype = MidiIoEventSubtype.PitchBend;
 					event.value = param1 + (stream.readInt8() << 7);
 					return event;
 				default:

@@ -8,48 +8,66 @@ export enum MidiFileType {
 	/**
 	 * contains a single track
 	 */
-	SINGLE = 0,
+	Single = 0,
 	/**
 	 * contains one or more simultaneous (as in played simultaneously) tracks
 	 */
-	SIMULTANEOUS = 1,
+	Simultaneous = 1,
 	/**
 	 * contains one or more independent (as in played independently) tracks
 	 */
-	INDEPENDENT =2
+	Independent = 2
 }
 
+export type MidiChannelType =
+	|0
+	|1
+	|2
+	|3
+	|4
+	|5
+	|6
+	|7
+	|8
+	|9
+	|10
+	|11
+	|12
+	|13
+	|14
+	|15;
+
 export enum MidiIoEventType {
-	channel = "channel",
-	meta = "meta",
-	sysEx = "sysEx",
-	dividedSysEx = "dividedSysEx"
+	Channel = "channel",
+	Meta = "meta",
+	SysEx = "sysEx",
+	DividedSysEx = "dividedSysEx"
 }
 
 export enum MidiIoEventSubtype {
-	channelAftertouch = "channelAftertouch",
-	controller = "controller",
-	copyrightNotice = "copyrightNotice",
-	cuePoint = "cuePoint",
-	endOfTrack = "endOfTrack",
-	instrumentName = "instrumentName",
-	keySignature = "keySignature",
-	lyrics = "lyrics",
-	marker = "marker",
-	midiChannelPrefix = "midiChannelPrefix",
-	noteAftertouch = "noteAftertouch",
-	noteOff = "noteOff",
-	noteOn = "noteOn",
-	pitchBend = "pitchBend",
-	programChange = "programChange",
-	setTempo = "setTempo",
-	sequenceNumber = "sequenceNumber",
-	sequencerSpecific = "sequencerSpecific",
-	smpteOffset = "smpteOffset",
-	timeSignature = "timeSignature",
-	trackName = "trackName",
-	text = "text",
-	unknown = "unknown"
+	ChannelAftertouch = "channelAftertouch",
+	Controller = "controller",
+	CopyrightNotice = "copyrightNotice",
+	CuePoint = "cuePoint",
+	EndOfTrack = "endOfTrack",
+	InstrumentName = "instrumentName",
+	KeySignature = "keySignature",
+	Lyrics = "lyrics",
+	Marker = "marker",
+	MidiChannelPrefix = "midiChannelPrefix",
+	NoteAftertouch = "noteAftertouch",
+	NoteOff = "noteOff",
+	NoteOn = "noteOn",
+	PitchBend = "pitchBend",
+	ProgramChange = "programChange",
+	SetTempo = "setTempo",
+	SequenceNumber = "sequenceNumber",
+	SequencerSpecific = "sequencerSpecific",
+	SmpteOffset = "smpteOffset",
+	TimeSignature = "timeSignature",
+	TrackName = "trackName",
+	Text = "text",
+	Unknown = "unknown"
 }
 
 export interface MidiIoHeader {
@@ -60,7 +78,7 @@ export interface MidiIoHeader {
 
 export interface MidiIoEvent {
 	amount?: number,
-	channel?: number,
+	channel?: MidiChannelType,
 	controllerType?: number,
 	data?: string,
 	deltaTime: number,

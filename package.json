@@ -5,9 +5,7 @@
 	},
 	"description": "Reads, parses and writes MIDI files. Fork of NHQ's midi-file-parser.",
 	"devDependencies": {
-		"@types/fs-extra": "9.0.12",
 		"@types/jest": "27.0.1",
-		"@types/lodash": "4.14.172",
 		"@types/node": "14.14.31",
 		"jest": "27.1.1",
 		"jest-junit": "12.2.0",
@@ -39,5 +37,5 @@
 		"test:unit": "npx jest ./test/unit"
 	},
 	"types": "dist/index",
-	"version": "2.2.0"
+	"version": "3.1.0"
 }
