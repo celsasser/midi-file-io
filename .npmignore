@@ -1,7 +1,11 @@
 # files
+jest.config.js
 tsconfig.json
+
 
 # directories
 .idea/
+coverage/
 src/
 test/
+
