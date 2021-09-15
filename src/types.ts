@@ -19,23 +19,24 @@ export enum MidiFileType {
 	Independent = 2
 }
 
-export type MidiChannelType =
-	|0
-	|1
-	|2
-	|3
-	|4
-	|5
-	|6
-	|7
-	|8
-	|9
-	|10
-	|11
-	|12
-	|13
-	|14
-	|15;
+export type MidiChannelType = |0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15;
+/**
+ * Number of sharps or flats
+ * -7 = 7 flats
+ *  0 = key of C
+ * +7 = 7 sharps
+ */
+export type MidiSharpFlatCount = -7|-6|-5|-4|-3|-2|-1|0|1|2|3|4|5|6|7;
+/**
+ * 0 = Major
+ * 1 - Minor
+ */
+export type MidiScaleMode = 0|1;
+
+export interface MidiKeySignature {
+	key: MidiSharpFlatCount;
+	scale: MidiScaleMode;
+}
 
 export enum MidiIoEventType {
 	Channel = "channel",
