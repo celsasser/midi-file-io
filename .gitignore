@@ -14,6 +14,7 @@
 coverage
 dist
 node_modules
+package-lock.json
 
 # our own internal gobbledegook
 test/data/out.mid

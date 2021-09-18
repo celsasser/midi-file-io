@@ -1,41 +1,41 @@
 {
-	"author": "Curt Elsasser",
-	"engines": {
-		"node": "14.17.0"
-	},
-	"description": "Reads, parses and writes MIDI files. Fork of NHQ's midi-file-parser.",
-	"devDependencies": {
-		"@types/jest": "27.0.1",
-		"@types/node": "14.14.31",
-		"jest": "27.1.1",
-		"jest-junit": "12.2.0",
-		"ts-jest": "27.0.5",
-		"typescript": "4.4.2"
-	},
-	"keywords": [
-		"midi",
-		".mid",
-		"parse",
-		"read",
-		"write",
-		"file"
-	],
-	"license": "see license",
-	"main": "dist/index",
-	"name": "midi-file-io",
-	"readmeFilename": "README.md",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/celsasser/midi-file-io"
-	},
-	"scripts": {
-		"build": "npx tsc -p tsconfig.json",
-		"clean": "rm -rf './.buildcache' '*.log' './build'",
-		"deploy": "npm run rebuild && npm run test && npm publish",
-		"rebuild": "npm run clean && npm run build",
-		"test": "npm run build && npm run test:unit",
-		"test:unit": "npx jest ./test/unit"
-	},
-	"types": "dist/index",
-	"version": "3.1.2"
+  "author": "Curt Elsasser",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "description": "Reads, parses and writes MIDI files. Fork of NHQ's midi-file-parser.",
+  "devDependencies": {
+    "@types/jest": "27.0.1",
+    "@types/node": "14.14.31",
+    "jest": "27.1.1",
+    "jest-junit": "12.2.0",
+    "ts-jest": "27.0.5",
+    "typescript": "4.4.2"
+  },
+  "keywords": [
+    "midi",
+    ".mid",
+    "parse",
+    "read",
+    "write",
+    "file"
+  ],
+  "license": "see license",
+  "main": "dist/index",
+  "name": "midi-file-io",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/celsasser/midi-file-io"
+  },
+  "scripts": {
+    "build": "npx tsc -p tsconfig.json",
+    "clean": "rm -rf './.buildcache' '*.log' './build'",
+    "deploy": "npm run rebuild && npm run test && npm publish",
+    "rebuild": "npm run clean && npm run build",
+    "test": "npm run build && npm run test:unit",
+    "test:unit": "npx jest ./test/unit"
+  },
+  "types": "dist/index",
+  "version": "3.1.3"
 }
